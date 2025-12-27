@@ -2,31 +2,32 @@
 
 [![sampctl](https://img.shields.io/badge/sampctl-textdraw--binding-2f2f2f.svg?style=for-the-badge)](https://github.com/TommyB123/textdraw-binding)
 
-<!--
-Short description of your library, why it's useful, some examples, pictures or
-videos. Link to your forum release thread too.
+This is a simple SA-MP/open.mp library that adds two functions to bind global and per-player textdraws to specific callback and pass along extra IDs to it.
 
-Remember: You can use "forumfmt" to convert this readme to forum BBCode!
+Example:
+```pawn
+// bind a preview model box to the OnPlayerClickCharacterTextdraw callback while passing along the ID of the respective character
+BindPlayerTextdrawToCallback(playerid, CharacterSelectionBoxes[playerid][x], "OnPlayerClickCharacterTextdraw", characterIDs[x]);
 
-What the sections below should be used for:
+//create a custom callback for the textdraw click. note the characterid argument.
+forward OnPlayerClickCharacterTextdraw(playerid, PlayerText:textdraw, characterid);
+public OnPlayerClickCharacterTextdraw(playerid, PlayerText:textdraw, characterid)
+{
+	CancelSelectTextDraw(playerid);
 
-`## Installation`: Leave this section un-edited unless you have some specific
-additional installation procedure.
+	TextDrawHideForPlayer(playerid, CharacterSelectionMain);
+	TextDrawHideForPlayer(playerid, CharacterSelectionLogout);
+	DestroyCharacterSelectionTDs(playerid);
 
-`## Testing`: Whether your library is tested with a simple `main()` and `print`,
-unit-tested, or demonstrated via prompting the player to connect, you should
-include some basic information for users to try out your code in some way.
+	CharacterLogin(playerid, characterid, FetchCharacterName(characterid)); //using the characterid argument we passed from BindPlayerTextdrawToCallback!
+}
+```
 
-And finally, maintaining your version number`:
+# Dependencies
+This library requires the following dependencies.
+* [PawnPlus](https://github.com/IS4Code/PawnPlus)
 
-* Follow [Semantic Versioning](https://semver.org/)
-* When you release a new version, update `VERSION` and `git tag` it
-* Versioning is important for sampctl to use the version control features
-
-Happy Pawning!
--->
-
-## Installation
+# Installation
 
 Simply install to your project:
 
@@ -40,24 +41,15 @@ Include in your code and begin using the library:
 #include <textdraw-binding>
 ```
 
-## Usage
-
-<!--
-Write your code documentation or examples here. If your library is documented in
-the source code, direct users there. If not, list your API and describe it well
-in this section. If your library is passive and has no API, simply omit this
-section.
--->
-
-## Testing
-
-<!--
-Depending on whether your package is tested via in-game "demo tests" or
-y_testing unit-tests, you should indicate to readers what to expect below here.
--->
-
-To test, simply run the package:
-
-```bash
-sampctl package run
+# Functions
+```pawn
+BindTextdrawToCallback(Text:textdraw, const callback[], extravalue = 0)
 ```
+
+Binds a global textdraw to a callback. The callback in question must have 3 arguments to accommodate for the extra value being passed along.
+
+```pawn
+BindPlayerTextdrawToCallback(playerid, PlayerText:textdraw, const callback[], extravalue = 0)
+```
+
+Binds a per-player textdraw to a callback. The callback in question must have 3 arguments to accommodate for the extra value being passed along.
