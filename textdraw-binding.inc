@@ -32,8 +32,8 @@ public _pp@on_init@tbinder()
     PlayerClickTextDrawHandler = pawn_register_callback("OnPlayerClickTextDraw", "TBinding_TextdrawClick");
     PlayerClickPlayerTDHandler = pawn_register_callback("OnPlayerClickPlayerTextDraw", "TBinding_PlayerTextdrawClick");
 
-    TextdrawDestroyHook = pawn_add_filter("TextDrawDestroy", "TBinding_TextDrawDestroy", "i", filter_out);
-    PlayerTextDrawDestroyHook = pawn_add_filter("PlayerTextDrawDestroy", "TBinding_PlayerTextDrawDestroy", "ii", filter_out);
+    TextdrawDestroyHook = pawn_add_filter("TextDrawDestroy", "i", "TBinding_TextDrawDestroy", filter_out);
+    PlayerTextDrawDestroyHook = pawn_add_filter("PlayerTextDrawDestroy", "ii", "TBinding_PlayerTextDrawDestroy", filter_out);
 }
 
 forward _pp@on_exit@tbinder();
